@@ -1,12 +1,13 @@
 import React from "react"
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
+import { ConditionalAnalytics } from '@/components/conditional-analytics'
 import './globals.css'
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://guincheck.com.br'),
   title: 'GuinCheck | Checklist de Remoção com Assinatura e PDF',
   description: 'App para motoristas e empresas de guincho: checklist guiado, fotos, assinatura na tela e PDF para compartilhar.',
   generator: 'v0.app',
@@ -44,7 +45,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={`font-sans antialiased`}>
         {children}
-        <Analytics />
+        <ConditionalAnalytics />
       </body>
     </html>
   )

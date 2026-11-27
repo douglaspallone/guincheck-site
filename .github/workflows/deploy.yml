@@ -29,7 +29,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # 22 LTS: os testes e o script legal:sync executam TypeScript direto no Node (type stripping, 22.18+).
+          node-version: "22"
           cache: "pnpm"
 
       - name: Setup Pages
@@ -40,8 +41,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Run tests
+        run: pnpm test
+
       - name: Build with Next.js
         run: pnpm run build
+        env:
+          # Variáveis do repositório (Settings > Secrets and variables > Actions > Variables). Todas são PÚBLICAS
+          # (vão para o navegador). Vazias = recurso desligado (a página de exclusão usa o caminho por e-mail).
+          NEXT_PUBLIC_LEGAL_API_BASE_URL: ${{ vars.NEXT_PUBLIC_LEGAL_API_BASE_URL }}
+          NEXT_PUBLIC_PRIVACY_API_BASE_URL: ${{ vars.NEXT_PUBLIC_PRIVACY_API_BASE_URL }}
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

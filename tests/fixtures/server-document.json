@@ -1,0 +1,82 @@
+{
+  "type": "privacy",
+  "version": "2.0",
+  "hash": "f03b883134f158d92a1095b4b772f146832c32aa2f894e44abe18c3641e1ad9b",
+  "title": "Política de Privacidade",
+  "summary": "Resumo de teste.",
+  "effectiveAt": "2026-12-01T03:00:00.000Z",
+  "publishedAt": "2026-11-30T12:00:00.000Z",
+  "sections": [
+    {
+      "id": "inteligencia-artificial",
+      "title": "Uso de inteligência artificial",
+      "content": "Primeiro parágrafo com **negrito**.\n\n- item um\n- item [link](https://guincheck.com.br/privacidade)",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Primeiro parágrafo com "
+            },
+            {
+              "t": "strong",
+              "v": "negrito"
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "item um"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "item "
+              },
+              {
+                "t": "link",
+                "v": "link",
+                "href": "https://guincheck.com.br/privacidade"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "retencao",
+      "title": "Retenção",
+      "content": "## Prazos\n\nTexto com acentuação: ação, coração.",
+      "blocks": [
+        {
+          "t": "h",
+          "c": [
+            {
+              "t": "text",
+              "v": "Prazos"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Texto com acentuação: ação, coração."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

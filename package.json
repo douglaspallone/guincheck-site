@@ -6,7 +6,10 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "eslint .",
-    "start": "next start"
+    "start": "next start",
+    "prebuild": "node scripts/sync-legal.ts || echo [legal:sync] ignorado: o build segue com as copias existentes",
+    "test": "node --test \"tests/*.test.ts\"",
+    "legal:sync": "node scripts/sync-legal.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
