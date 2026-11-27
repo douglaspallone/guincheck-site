@@ -1,0 +1,710 @@
+{
+  "type": "privacy",
+  "title": "Política de Privacidade",
+  "updatedAt": "2026-07-17",
+  "note": "Texto que o site já publicava em /privacidade (commit ce3d9df), convertido em dados sem alteração de redação. Será substituído pela versão publicada no GuinCheck Ops.",
+  "preamble": [
+    {
+      "t": "p",
+      "c": [
+        {
+          "t": "text",
+          "v": "Esta Política de Privacidade descreve como o aplicativo Checklist Guincho, também identificado como GuinCheck, coleta, usa, armazena e protege informações dos usuários."
+        }
+      ]
+    },
+    {
+      "t": "p",
+      "c": [
+        {
+          "t": "strong",
+          "v": "Responsável pelo app:"
+        },
+        {
+          "t": "text",
+          "v": " 4C Solutions"
+        }
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "id": "dados-coletados",
+      "title": "1. Dados que coletamos",
+      "content": "O Checklist Guincho pode coletar os seguintes dados, conforme o uso do aplicativo:\n\n### Dados de conta e autenticação:\n\n- nome;\n- e-mail;\n- identificador de usuário;\n- dados de login via e-mail/senha ou login com Google.\n\n### Dados do perfil do motorista ou empresa:\n\n- nome fantasia;\n- CNPJ;\n- nome do responsável;\n- CPF;\n- logotipo;\n- assinatura cadastrada;\n- modelos de checklist personalizados.\n\n### Dados de veículos:\n\n- placa;\n- modelo;\n- informações vinculadas ao cadastro do veículo.\n\n### Dados dos checklists:\n\n- nome da base;\n- seguradora;\n- nome e RG do cliente;\n- dados do veículo, como marca, modelo, cor, placa e quilometragem;\n- local de atendimento e destino informados pelo usuário;\n- motivo da chamada;\n- itens vistoriados;\n- observações;\n- fotos de remoção e recebimento;\n- nome e RG do recebedor;\n- assinaturas do cliente e do recebedor;\n- arquivos PDF gerados a partir do checklist.\n\n### Dados de pagamento e assinatura:\n\n- status da assinatura;\n- plano contratado;\n- informações de checkout;\n- identificadores de pagamento ou assinatura fornecidos pelo provedor de pagamento;\n- dados necessários para validar acesso, cupons, pagamentos pendentes ou cancelamentos.\n\nO aplicativo não armazena dados completos de cartão de crédito. Pagamentos são processados por provedores terceiros, como Mercado Pago, conforme suas próprias políticas.",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "O Checklist Guincho pode coletar os seguintes dados, conforme o uso do aplicativo:"
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "c": [
+            {
+              "t": "text",
+              "v": "Dados de conta e autenticação:"
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "nome;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "e-mail;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "identificador de usuário;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "dados de login via e-mail/senha ou login com Google."
+              }
+            ]
+          ]
+        },
+        {
+          "t": "h",
+          "c": [
+            {
+              "t": "text",
+              "v": "Dados do perfil do motorista ou empresa:"
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "nome fantasia;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "CNPJ;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "nome do responsável;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "CPF;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "logotipo;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "assinatura cadastrada;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "modelos de checklist personalizados."
+              }
+            ]
+          ]
+        },
+        {
+          "t": "h",
+          "c": [
+            {
+              "t": "text",
+              "v": "Dados de veículos:"
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "placa;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "modelo;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "informações vinculadas ao cadastro do veículo."
+              }
+            ]
+          ]
+        },
+        {
+          "t": "h",
+          "c": [
+            {
+              "t": "text",
+              "v": "Dados dos checklists:"
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "nome da base;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "seguradora;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "nome e RG do cliente;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "dados do veículo, como marca, modelo, cor, placa e quilometragem;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "local de atendimento e destino informados pelo usuário;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "motivo da chamada;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "itens vistoriados;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "observações;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "fotos de remoção e recebimento;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "nome e RG do recebedor;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "assinaturas do cliente e do recebedor;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "arquivos PDF gerados a partir do checklist."
+              }
+            ]
+          ]
+        },
+        {
+          "t": "h",
+          "c": [
+            {
+              "t": "text",
+              "v": "Dados de pagamento e assinatura:"
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "status da assinatura;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "plano contratado;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "informações de checkout;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "identificadores de pagamento ou assinatura fornecidos pelo provedor de pagamento;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "dados necessários para validar acesso, cupons, pagamentos pendentes ou cancelamentos."
+              }
+            ]
+          ]
+        },
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "O aplicativo não armazena dados completos de cartão de crédito. Pagamentos são processados por provedores terceiros, como Mercado Pago, conforme suas próprias políticas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "como-usamos-os-dados",
+      "title": "2. Como usamos os dados",
+      "content": "Usamos os dados para:\n\n- criar e gerenciar contas de usuário;\n- permitir login com e-mail/senha ou Google;\n- cadastrar perfil do motorista ou empresa;\n- registrar veículos;\n- criar, salvar, sincronizar e consultar checklists;\n- gerar PDFs com dados, fotos e assinaturas dos checklists;\n- permitir uso offline e posterior sincronização;\n- controlar acesso, plano, pagamento e assinatura;\n- melhorar estabilidade, corrigir erros e monitorar falhas de sincronização;\n- cumprir obrigações legais, fiscais, contratuais e de segurança.",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Usamos os dados para:"
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "criar e gerenciar contas de usuário;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "permitir login com e-mail/senha ou Google;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "cadastrar perfil do motorista ou empresa;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "registrar veículos;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "criar, salvar, sincronizar e consultar checklists;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "gerar PDFs com dados, fotos e assinaturas dos checklists;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "permitir uso offline e posterior sincronização;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "controlar acesso, plano, pagamento e assinatura;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "melhorar estabilidade, corrigir erros e monitorar falhas de sincronização;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "cumprir obrigações legais, fiscais, contratuais e de segurança."
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "armazenamento-local-e-sincronizacao",
+      "title": "3. Armazenamento local e sincronização",
+      "content": "O Checklist Guincho pode armazenar dados localmente no dispositivo para permitir uso offline, incluindo checklists, fotos, assinaturas, veículos e perfil do usuário.\n\nQuando houver conexão com a internet, esses dados podem ser sincronizados com servidores em nuvem, como Firebase/Google Cloud, para backup, continuidade do serviço e acesso entre dispositivos.",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "O Checklist Guincho pode armazenar dados localmente no dispositivo para permitir uso offline, incluindo checklists, fotos, assinaturas, veículos e perfil do usuário."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Quando houver conexão com a internet, esses dados podem ser sincronizados com servidores em nuvem, como Firebase/Google Cloud, para backup, continuidade do serviço e acesso entre dispositivos."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "compartilhamento-de-dados",
+      "title": "4. Compartilhamento de dados",
+      "content": "Podemos compartilhar dados apenas quando necessário para funcionamento do serviço, incluindo:\n\n- Firebase/Google Cloud, para autenticação, banco de dados, armazenamento de arquivos e infraestrutura;\n- Google, para autenticação com conta Google;\n- Mercado Pago ou outro provedor de pagamento, para processamento de pagamentos e assinaturas;\n- serviços técnicos usados para hospedagem, segurança, análise operacional e suporte.\n\nNão vendemos dados pessoais dos usuários.",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Podemos compartilhar dados apenas quando necessário para funcionamento do serviço, incluindo:"
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "Firebase/Google Cloud, para autenticação, banco de dados, armazenamento de arquivos e infraestrutura;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "Google, para autenticação com conta Google;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "Mercado Pago ou outro provedor de pagamento, para processamento de pagamentos e assinaturas;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "serviços técnicos usados para hospedagem, segurança, análise operacional e suporte."
+              }
+            ]
+          ]
+        },
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Não vendemos dados pessoais dos usuários."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fotos-assinaturas-e-documentos",
+      "title": "5. Fotos, assinaturas e documentos",
+      "content": "As fotos, assinaturas e PDFs enviados ou gerados no aplicativo são usados para documentar os atendimentos de guincho, remoção, entrega e recebimento de veículos.\n\nEsses arquivos podem conter dados pessoais ou imagens de veículos, documentos, locais e pessoas. O usuário deve utilizar essas funções apenas quando tiver autorização ou base legítima para registrar tais informações.",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "As fotos, assinaturas e PDFs enviados ou gerados no aplicativo são usados para documentar os atendimentos de guincho, remoção, entrega e recebimento de veículos."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Esses arquivos podem conter dados pessoais ou imagens de veículos, documentos, locais e pessoas. O usuário deve utilizar essas funções apenas quando tiver autorização ou base legítima para registrar tais informações."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "seguranca-dos-dados",
+      "title": "6. Segurança dos dados",
+      "content": "Adotamos medidas técnicas e organizacionais para proteger os dados, incluindo autenticação, regras de acesso, armazenamento em serviços de nuvem, comunicação segura e controle de acesso por usuário.\n\nApesar dos esforços de segurança, nenhum sistema é totalmente imune a falhas. Em caso de incidente relevante, tomaremos as medidas cabíveis conforme a legislação aplicável.",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Adotamos medidas técnicas e organizacionais para proteger os dados, incluindo autenticação, regras de acesso, armazenamento em serviços de nuvem, comunicação segura e controle de acesso por usuário."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Apesar dos esforços de segurança, nenhum sistema é totalmente imune a falhas. Em caso de incidente relevante, tomaremos as medidas cabíveis conforme a legislação aplicável."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "retencao-e-exclusao",
+      "title": "7. Retenção e exclusão",
+      "content": "Mantemos os dados enquanto forem necessários para fornecer o serviço, cumprir obrigações legais, resolver disputas, manter registros operacionais ou enquanto a conta do usuário estiver ativa.\n\nO usuário pode solicitar exclusão ou correção de seus dados pelo contato de suporte informado ao final desta política.\n\nAlguns dados podem ser mantidos por prazo adicional quando necessários para cumprimento de obrigações legais, fiscais, contábeis, contratuais ou de segurança.",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Mantemos os dados enquanto forem necessários para fornecer o serviço, cumprir obrigações legais, resolver disputas, manter registros operacionais ou enquanto a conta do usuário estiver ativa."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "O usuário pode solicitar exclusão ou correção de seus dados pelo contato de suporte informado ao final desta política."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Alguns dados podem ser mantidos por prazo adicional quando necessários para cumprimento de obrigações legais, fiscais, contábeis, contratuais ou de segurança."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "direitos-do-usuario",
+      "title": "8. Direitos do usuário",
+      "content": "O usuário pode solicitar:\n\n- confirmação sobre tratamento de dados;\n- acesso aos dados;\n- correção de dados incompletos ou desatualizados;\n- exclusão de dados, quando aplicável;\n- informações sobre compartilhamento;\n- revogação de consentimentos, quando o tratamento depender de consentimento.",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "O usuário pode solicitar:"
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "confirmação sobre tratamento de dados;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "acesso aos dados;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "correção de dados incompletos ou desatualizados;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "exclusão de dados, quando aplicável;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "informações sobre compartilhamento;"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "revogação de consentimentos, quando o tratamento depender de consentimento."
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "permissoes-do-dispositivo",
+      "title": "9. Permissões do dispositivo",
+      "content": "O aplicativo pode solicitar acesso a arquivos, fotos ou recursos do dispositivo quando o usuário optar por anexar imagens, gerar documentos ou salvar arquivos.\n\nO app não coleta localização em segundo plano. Locais de atendimento e destino são informados manualmente pelo usuário no checklist.",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "O aplicativo pode solicitar acesso a arquivos, fotos ou recursos do dispositivo quando o usuário optar por anexar imagens, gerar documentos ou salvar arquivos."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "O app não coleta localização em segundo plano. Locais de atendimento e destino são informados manualmente pelo usuário no checklist."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "criancas-e-adolescentes",
+      "title": "10. Crianças e adolescentes",
+      "content": "O Checklist Guincho é destinado ao uso profissional por motoristas, empresas, bases operacionais e usuários autorizados. O aplicativo não é direcionado a crianças.",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "O Checklist Guincho é destinado ao uso profissional por motoristas, empresas, bases operacionais e usuários autorizados. O aplicativo não é direcionado a crianças."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alteracoes-nesta-politica",
+      "title": "11. Alterações nesta política",
+      "content": "Podemos atualizar esta Política de Privacidade para refletir mudanças no aplicativo, requisitos legais ou melhorias no serviço. A versão atualizada será publicada nesta página com a data de atualização.",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Podemos atualizar esta Política de Privacidade para refletir mudanças no aplicativo, requisitos legais ou melhorias no serviço. A versão atualizada será publicada nesta página com a data de atualização."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "contato",
+      "title": "12. Contato",
+      "content": "Em caso de dúvidas sobre esta Política de Privacidade ou sobre o tratamento de dados pessoais, entre em contato:\n\n- **4C Solutions**\n- Estado: SP\n- Contato: +55 11 92691-3999",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Em caso de dúvidas sobre esta Política de Privacidade ou sobre o tratamento de dados pessoais, entre em contato:"
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "strong",
+                "v": "4C Solutions"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "Estado: SP"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "Contato: +55 11 92691-3999"
+              }
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}
