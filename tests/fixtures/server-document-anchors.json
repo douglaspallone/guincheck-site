@@ -1,0 +1,196 @@
+{
+  "type": "privacy",
+  "version": "2.0-teste",
+  "hash": "231f9847bcee065d8a91d832fdf282cffd2a2e8efc930b2ebf025551c7596499",
+  "title": "Política de Privacidade",
+  "summary": "Documento de TESTE gerado pelo código do backend; não é texto jurídico.",
+  "effectiveAt": "2026-11-01T03:00:00.000Z",
+  "publishedAt": "2026-11-02T12:00:00.000Z",
+  "sections": [
+    {
+      "id": "inteligencia-artificial",
+      "title": "Uso de inteligência artificial",
+      "content": "Texto de teste da seção \"Uso de inteligência artificial\".\n\n- primeiro item\n- segundo item com **destaque**",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Texto de teste da seção \"Uso de inteligência artificial\"."
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "primeiro item"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "segundo item com "
+              },
+              {
+                "t": "strong",
+                "v": "destaque"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whatsapp",
+      "title": "WhatsApp",
+      "content": "Texto de teste da seção \"WhatsApp\".\n\n- primeiro item\n- segundo item com **destaque**",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Texto de teste da seção \"WhatsApp\"."
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "primeiro item"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "segundo item com "
+              },
+              {
+                "t": "strong",
+                "v": "destaque"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "retencao",
+      "title": "Retenção",
+      "content": "Texto de teste da seção \"Retenção\".\n\n- primeiro item\n- segundo item com **destaque**",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Texto de teste da seção \"Retenção\"."
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "primeiro item"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "segundo item com "
+              },
+              {
+                "t": "strong",
+                "v": "destaque"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "exclusao-de-dados",
+      "title": "Exclusão de dados",
+      "content": "Texto de teste da seção \"Exclusão de dados\".\n\n- primeiro item\n- segundo item com **destaque**",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Texto de teste da seção \"Exclusão de dados\"."
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "primeiro item"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "segundo item com "
+              },
+              {
+                "t": "strong",
+                "v": "destaque"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "direitos-dos-titulares",
+      "title": "Direitos dos titulares",
+      "content": "Texto de teste da seção \"Direitos dos titulares\".\n\n- primeiro item\n- segundo item com **destaque**",
+      "blocks": [
+        {
+          "t": "p",
+          "c": [
+            {
+              "t": "text",
+              "v": "Texto de teste da seção \"Direitos dos titulares\"."
+            }
+          ]
+        },
+        {
+          "t": "ul",
+          "items": [
+            [
+              {
+                "t": "text",
+                "v": "primeiro item"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "v": "segundo item com "
+              },
+              {
+                "t": "strong",
+                "v": "destaque"
+              }
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,11 +1,11 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { AlertTriangle, CheckCircle2, Loader2, MailCheck } from "lucide-react"
+import { AlertTriangle, CheckCircle2, Clock, Loader2, MailCheck } from "lucide-react"
 import { confirmDeletionRequest, readTokenFromHash } from "@/lib/privacy/deletion"
 import { PRIVACY_API_BASE_URL, SUPPORT_EMAIL } from "@/lib/institutional"
 
-type State = "idle" | "working" | "confirmed" | "invalid" | "unavailable" | "rate_limited" | "not_configured" | "no_token"
+type State = "idle" | "working" | "confirmed" | "expired" | "invalid" | "unavailable" | "rate_limited" | "not_configured" | "no_token"
 
 /**
  * Confirma que o e-mail informado pertence ao titular. O código vem no fragmento (#t=...) da URL: o navegador não o
@@ -43,7 +43,7 @@ export function ConfirmPanel() {
     setState("working")
     try {
       const result = await confirmDeletionRequest(PRIVACY_API_BASE_URL, token)
-      if (result.kind === "confirmed" || result.kind === "invalid_token") setToken(null)
+      if (result.kind === "confirmed" || result.kind === "invalid_token" || result.kind === "expired") setToken(null)
       setState(result.kind === "invalid_token" ? "invalid" : result.kind)
     } finally {
       inFlight.current = false
@@ -58,6 +58,28 @@ export function ConfirmPanel() {
         <p className="mt-3 text-base leading-relaxed text-foreground">
           Obrigado. Sua solicitação segue para análise da nossa equipe. A conta ainda não foi excluída: a equipe
           entrará em contato pelo e-mail informado caso precise de mais alguma informação.
+        </p>
+      </div>
+    )
+  }
+
+  if (state === "expired") {
+    return (
+      <div role="status" className="rounded-2xl border border-border bg-muted/40 p-6 sm:p-8">
+        <Clock className="h-10 w-10 text-primary" aria-hidden="true" />
+        <h2 className="mt-4 text-2xl font-bold text-foreground">O prazo deste link terminou</h2>
+        <p className="mt-3 text-base leading-relaxed text-foreground">
+          Por segurança, o link de confirmação vale por tempo limitado. Para receber um novo link, preencha o
+          formulário de exclusão de novo com o mesmo e-mail. A conta ainda não foi excluída.
+        </p>
+        <a
+          href="/exclusao-de-conta"
+          className="mt-6 inline-flex h-14 w-full items-center justify-center rounded-lg bg-accent px-6 text-lg font-bold text-accent-foreground hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/40 sm:w-auto sm:min-w-72"
+        >
+          Pedir um novo link
+        </a>
+        <p className="mt-4 text-sm text-muted-foreground">
+          Dúvidas? <a className="underline" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
         </p>
       </div>
     )

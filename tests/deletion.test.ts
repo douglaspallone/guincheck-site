@@ -107,12 +107,11 @@ test("envio: só sucesso explícito vale como recebido (200 sem ok:true, HTML, 5
   }
 })
 
-test("envio: 400 → inválido (mensagem limitada), 429 → limite", async () => {
+test("envio: 400 → inválido SEM repassar texto do servidor (evita vazar estado de conta); 429 → limite", async () => {
   const invalid = await submitDeletionRequest("https://api.example", payload, {
-    fetchImpl: asFetch(async () => json({ error: "x".repeat(900) }, 400)),
+    fetchImpl: asFetch(async () => json({ error: "Não existe conta para este e-mail" }, 400)),
   })
-  assert.equal(invalid.kind, "invalid")
-  assert.equal((invalid as { message: string }).message.length, 300)
+  assert.deepEqual(invalid, { kind: "invalid" })
   const limited = await submitDeletionRequest("https://api.example", payload, { fetchImpl: asFetch(async () => json({}, 429)) })
   assert.deepEqual(limited, { kind: "rate_limited" })
 })
@@ -139,7 +138,9 @@ test("confirmação de titularidade: resultados e token só no fragmento", async
   assert.deepEqual(ok, { kind: "confirmed" })
   assert.equal(seen, 'https://api.example/confirmSiteAccountDeletion {"token":"tok"}')
   assert.deepEqual(await confirmDeletionRequest("https://api.example", "tok", { fetchImpl: asFetch(async () => json({}, 400)) }), { kind: "invalid_token" })
-  assert.deepEqual(await confirmDeletionRequest("https://api.example", "tok", { fetchImpl: asFetch(async () => json({}, 410)) }), { kind: "invalid_token" })
+  assert.deepEqual(await confirmDeletionRequest("https://api.example", "tok", { fetchImpl: asFetch(async () => json({}, 410)) }), { kind: "expired" })
+  assert.deepEqual(await confirmDeletionRequest("https://api.example", "tok", { fetchImpl: asFetch(async () => json({}, 404)) }), { kind: "invalid_token" })
+  assert.deepEqual(await confirmDeletionRequest("https://api.example", "tok", { fetchImpl: asFetch(async () => json({}, 429)) }), { kind: "rate_limited" })
   assert.deepEqual(await confirmDeletionRequest("https://api.example", "tok", { fetchImpl: asFetch(async () => json({}, 500)) }), { kind: "unavailable" })
   assert.deepEqual(await confirmDeletionRequest("https://api.example", "tok", { fetchImpl: asFetch(async () => json({ ok: false })) }), { kind: "unavailable" })
 

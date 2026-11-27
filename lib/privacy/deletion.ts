@@ -79,13 +79,14 @@ export const parseProtocol = (value: unknown): string | null =>
 
 export type SubmitResult =
   | { kind: "received"; protocol: string | null }
-  | { kind: "invalid"; message: string }
+  | { kind: "invalid" }
   | { kind: "rate_limited" }
   | { kind: "unavailable" }
   | { kind: "not_configured" }
 
 export type ConfirmResult =
   | { kind: "confirmed" }
+  | { kind: "expired" }
   | { kind: "invalid_token" }
   | { kind: "rate_limited" }
   | { kind: "unavailable" }
@@ -142,10 +143,8 @@ export async function submitDeletionRequest(
       options,
     )
     if (result.status === 429) return { kind: "rate_limited" }
-    if (result.status >= 400 && result.status < 500) {
-      const message = typeof result.json?.error === "string" ? result.json.error : ""
-      return { kind: "invalid", message: message.slice(0, 300) }
-    }
+    // Nunca repassa texto do servidor à tela: uma mensagem específica poderia revelar se existe conta.
+    if (result.status >= 400 && result.status < 500) return { kind: "invalid" }
     // Só vale como "recebida" a resposta de sucesso explícita do servidor (nunca presumir).
     if (!result.ok || result.json?.ok !== true) return { kind: "unavailable" }
     return { kind: "received", protocol: parseProtocol(result.json.protocol) }
@@ -159,6 +158,8 @@ export async function confirmDeletionRequest(baseUrl: string, token: string, opt
   try {
     const result = await postJson(baseUrl, "confirmSiteAccountDeletion", { token }, options)
     if (result.status === 429) return { kind: "rate_limited" }
+    // 410 = prazo do link terminou (contrato). Demais 4xx = inválido ou já utilizado.
+    if (result.status === 410) return { kind: "expired" }
     if (result.status >= 400 && result.status < 500) return { kind: "invalid_token" }
     if (!result.ok || result.json?.ok !== true) return { kind: "unavailable" }
     return { kind: "confirmed" }

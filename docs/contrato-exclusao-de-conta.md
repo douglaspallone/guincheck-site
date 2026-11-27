@@ -1,6 +1,10 @@
 # Contrato — solicitação pública de exclusão de conta (site → backend GuinCheck)
 
-Status: **proposta para o backend** (frente GuinCheck App/Ops). O site já implementa o lado cliente
+Status: **proposta — aguardando o contrato definitivo da frente Ops/backend** (em 27/11/2026 os endpoints ainda não
+existem em nenhum repositório; o backend jurídico commitado em `feat/legal-documents-backend` cobre só leitura de
+documentos e `submitPrivacyRequest` autenticado). Quando o contrato definitivo chegar, reconciliar o que difere abaixo
+(o cliente está isolado em `lib/privacy/deletion.ts`: nomes de rota, campos e códigos HTTP mudam em um único arquivo).
+O site já implementa o lado cliente
 (`lib/privacy/deletion.ts`, `components/account-deletion/*`) e fica **desligado** até existir endpoint
 aprovado: sem `NEXT_PUBLIC_PRIVACY_API_BASE_URL` a página usa o caminho por e-mail e não simula recebimento nem protocolo.
 
@@ -31,8 +35,23 @@ Respostas:
 
 - `200 { "ok": true, "protocol": "PRV-…" }` — **idêntica** exista ou não conta para o e-mail (sem enumeração).
   O `protocol` é gerado para toda solicitação válida, inclusive sem conta.
-- `400 { "error": "…" }` — validação (mensagem genérica, sem revelar estado de conta).
-- `429` — limite de requisições. Qualquer outra coisa é tratada pelo site como "indisponível" (nunca como recebida).
+- `400` — validação. **O site nunca exibe texto vindo do servidor**; mostra uma mensagem fixa (não vaza estado de conta).
+- `429` — limite de requisições.
+- Qualquer outra coisa (5xx, corpo sem `ok: true`, rede, tempo esgotado de 15 s) é tratada pelo site como
+  "indisponível": nunca como recebida, e **nunca** se mostra protocolo sem `ok: true` explícito do servidor.
+
+**Equivalência pública:** com ou sem conta para o e-mail, a resposta deve ter o mesmo status, o mesmo conjunto de
+campos, protocolo no mesmo formato e tempo comparável. `scripts/check-backend.ts --submit` confere isso contra o
+ambiente de teste (e-mails de teste), e o e2e confirma que a tela é idêntica.
+
+### Link expirado e reenvio seguro (proposta)
+
+Não há endpoint de reenvio separado: **reenviar = repetir `requestSiteAccountDeletion` com o mesmo e-mail**.
+O servidor trata como a mesma solicitação aberta (mesmo protocolo), gera **novo** token (invalida o anterior) e
+reenvia o e-mail, com limite de taxa próprio (por hash de e-mail e de IP) e a **mesma resposta pública** de sempre.
+Assim o reenvio não abre canal novo de enumeração nem de spam além do que o limite já cobre.
+Na página de confirmação, `410` mostra "O prazo deste link terminou" com o botão "Pedir um novo link" (volta ao
+formulário). `400/404` = link inválido ou já usado; mensagem distinta, sem dizer se existe conta.
 
 Comportamento no servidor:
 
@@ -51,7 +70,7 @@ Comportamento no servidor:
 
 ### `confirmSiteAccountDeletion`
 
-`{ "token": "<43 caracteres>" }` → `200 { "ok": true }` | `400/410` (token inválido, expirado ou já usado) | `429`.
+`{ "token": "<43 caracteres>" }` → `200 { "ok": true }` | `410` (**expirado**) | `400`/`404` (inválido ou já usado) | `429`.
 
 - Compara o SHA-256 do token com `verification.tokenHash`; uso único; respeita `expiresAt`.
 - Marca `verification.status = "verified"` e registra evento. **Não exclui nada.**
@@ -71,7 +90,11 @@ Comportamento no servidor:
 Aparece na mesma lista "Solicitações de privacidade", com `origin: "site"`. Pontos para a frente Ops:
 
 - Exibir o selo **identidade confirmada / não confirmada** (`verification.status`).
-- Bloquear a conclusão como "Conta excluída" enquanto `verification.status !== "verified"` e o `uid` for nulo.
+- **Bloquear no backend** qualquer exclusão/conclusão como "Conta excluída" quando a identidade **não** estiver
+  confirmada (`verification.status !== "verified"`) **ou** quando não existir `uid` válido (as duas condições
+  bloqueiam; basta uma). Solicitações sem conta ficam só como registro, a encerrar pelo Ops com justificativa.
+- Solicitações recebidas pelo caminho alternativo (e-mail `suporte@`) entram no Ops por `createPrivacyRequest`
+  com origem `email`, sem selo de identidade confirmada: o Ops confirma a titularidade por outro meio.
 - A exclusão em si continua exclusivamente pelo ciclo de vida de contas existente (lápide em `deletedAccounts`).
 - Aviso de conclusão ao solicitante: `publicNote` + e-mail (mesma infraestrutura abaixo).
 

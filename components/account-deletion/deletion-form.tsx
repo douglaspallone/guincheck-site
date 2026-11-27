@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, useRef, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 import { AlertTriangle, CheckCircle2, Copy, Info, Loader2, Mail, MessageCircle, ShieldAlert } from "lucide-react"
 import { Turnstile } from "@/components/account-deletion/turnstile"
 import {
@@ -43,15 +43,16 @@ export function DeletionForm() {
     turnstileError: `${uid}-turnstile-error`,
   }
 
-  const [email, setEmail] = useState("")
-  const [reason, setReason] = useState("")
-  const [confirmed, setConfirmed] = useState(false)
-  const [honeypot, setHoneypot] = useState("")
+  // Campos NÃO controlados: o que a pessoa digita antes de a página terminar de carregar (celular lento) não se
+  // perde, e os valores só são lidos no envio. `saved` repõe os dados se o formulário for remontado (voltar).
+  const saved = useRef({ email: "", reason: "", confirmed: false })
+  const [hydrated, setHydrated] = useState(false)
+  // Antes do JavaScript carregar, o botão fica desabilitado: um envio nativo poria o e-mail na URL.
+  useEffect(() => setHydrated(true), [])
   const [token, setToken] = useState<string | null>(null)
   const [resetSignal, setResetSignal] = useState(0)
   const [errors, setErrors] = useState<DeletionFormErrors>({})
   const [failure, setFailure] = useState<Failure>(null)
-  const [failureMessage, setFailureMessage] = useState("")
   const [phase, setPhase] = useState<Phase>({ name: "form" })
 
   // Trava síncrona: impede duas requisições mesmo com cliques/Enter em sequência antes do re-render.
@@ -59,6 +60,8 @@ export function DeletionForm() {
   // Mesma chave para as tentativas da mesma solicitação (o servidor trata repetição como a mesma solicitação).
   const requestId = useRef<string>("")
   const emailRef = useRef<HTMLInputElement>(null)
+  const reasonRef = useRef<HTMLSelectElement>(null)
+  const honeypotRef = useRef<HTMLInputElement>(null)
   const confirmRef = useRef<HTMLInputElement>(null)
   const resultRef = useRef<HTMLHeadingElement>(null)
 
@@ -69,6 +72,11 @@ export function DeletionForm() {
     if (inFlight.current) return
     setFailure(null)
 
+    const email = emailRef.current?.value ?? ""
+    const reason = reasonRef.current?.value ?? ""
+    const confirmed = confirmRef.current?.checked ?? false
+    const honeypot = honeypotRef.current?.value ?? ""
+    saved.current = { email, reason, confirmed }
     const check = validateDeletionForm({ email, reason, confirmed, turnstileToken: token ?? undefined, requireTurnstile: apiConfigured && turnstileEnabled })
     setErrors(check.errors)
     if (!check.ok || !check.value) {
@@ -101,7 +109,6 @@ export function DeletionForm() {
         return
       }
       setFailure(result.kind === "rate_limited" ? "rate_limited" : result.kind === "invalid" ? "invalid" : "unavailable")
-      setFailureMessage(result.kind === "invalid" ? result.message : "")
       setPhase({ name: "form" })
       setToken(null)
       setResetSignal((n) => n + 1)
@@ -142,7 +149,7 @@ export function DeletionForm() {
                 {failure === "rate_limited"
                   ? "Aguarde alguns minutos e tente de novo."
                   : failure === "invalid"
-                    ? failureMessage || "Confira o e-mail e tente de novo."
+                    ? "Confira o e-mail digitado e tente de novo."
                     : "Pode ser a sua conexão ou uma instabilidade nossa. Seus dados continuam preenchidos: toque no botão para tentar de novo."}
               </p>
               <p>
@@ -173,8 +180,7 @@ export function DeletionForm() {
           spellCheck={false}
           required
           maxLength={254}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          defaultValue={saved.current.email}
           disabled={submitting}
           aria-invalid={errors.email ? true : undefined}
           aria-describedby={errors.email ? ids.emailError : undefined}
@@ -197,8 +203,8 @@ export function DeletionForm() {
         <select
           id={ids.reason}
           name="reason"
-          value={reason}
-          onChange={(e) => setReason(e.target.value)}
+          ref={reasonRef}
+          defaultValue={saved.current.reason}
           disabled={submitting}
           className="h-14 w-full rounded-lg border border-input bg-background px-4 text-base text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/30 disabled:opacity-60"
         >
@@ -233,8 +239,7 @@ export function DeletionForm() {
             id={ids.confirm}
             name="confirmed"
             type="checkbox"
-            checked={confirmed}
-            onChange={(e) => setConfirmed(e.target.checked)}
+            defaultChecked={saved.current.confirmed}
             disabled={submitting}
             aria-invalid={errors.confirmed ? true : undefined}
             aria-describedby={errors.confirmed ? ids.confirmError : undefined}
@@ -256,7 +261,7 @@ export function DeletionForm() {
       <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
         <label>
           Não preencha este campo
-          <input type="text" name="website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+          <input ref={honeypotRef} type="text" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
         </label>
       </div>
 
@@ -271,8 +276,8 @@ export function DeletionForm() {
 
       <button
         type="submit"
-        disabled={submitting}
-        aria-disabled={submitting}
+        disabled={submitting || !hydrated}
+        aria-disabled={submitting || !hydrated}
         className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-lg bg-accent px-6 text-lg font-bold text-accent-foreground shadow-sm transition-colors hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto sm:min-w-80"
       >
         {submitting ? (

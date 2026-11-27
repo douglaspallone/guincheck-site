@@ -88,7 +88,7 @@ export function LegalDocumentView({ type, initial }: Props) {
           <div className="mt-8 lg:grid lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-10">
             <aside className="print:hidden">
               <details ref={tocRef} className="rounded-xl border border-border bg-background lg:hidden">
-                <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 px-4 font-semibold text-foreground">
+                <summary className="flex min-h-12 cursor-pointer list-none [&::-webkit-details-marker]:hidden items-center gap-2 px-4 font-semibold text-foreground">
                   <List className="h-5 w-5" aria-hidden="true" />
                   Sumário
                   <span className="ml-auto text-sm font-normal text-muted-foreground">toque para abrir ou fechar</span>

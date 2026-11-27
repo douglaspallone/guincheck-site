@@ -15,7 +15,8 @@ import path from "node:path"
 import { pathToFileURL } from "node:url"
 
 const require = createRequire(import.meta.url)
-const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright")
+const pw = require(process.env.PLAYWRIGHT_MODULE || "playwright")
+const ENGINE = process.env.BROWSER === "webkit" ? "webkit" : "chromium"
 const FALLBACK_DIR = process.env.FALLBACK_DIR
 const API_DIR = process.env.API_DIR
 const SHOTS = process.env.SHOTS_DIR
@@ -68,11 +69,15 @@ async function check(name, fn) {
     console.log(`  ✘ ${name}\n      ${String(error.message).split("\n").slice(0, 4).join("\n      ")}`)
   }
 }
-const shot = async (page, name, full = true) => SHOTS && page.screenshot({ path: path.join(SHOTS, `${name}.jpg`), fullPage: full, type: "jpeg", quality: 72 })
+const shot = async (page, name, full = true) => SHOTS && (await page.locator("form button[type=submit]:enabled").first().waitFor({ timeout: 3000 }).catch(() => {}), true) && page.screenshot({ path: path.join(SHOTS, `${name}${ENGINE === "webkit" ? "-webkit" : ""}.jpg`), fullPage: full, type: "jpeg", quality: 72 })
 
-const browser = await chromium.launch()
+const browser = await pw[ENGINE].launch()
+console.log(`Motor: ${ENGINE} ${browser.version()}`)
 const desktop = { viewport: { width: 1280, height: 900 }, locale: "pt-BR", timezoneId: "America/Sao_Paulo" }
-const mobile = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, locale: "pt-BR", timezoneId: "America/Sao_Paulo" }
+const mobile =
+  ENGINE === "webkit"
+    ? { ...pw.devices["iPhone 13"], locale: "pt-BR", timezoneId: "America/Sao_Paulo" }
+    : { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, locale: "pt-BR", timezoneId: "America/Sao_Paulo" }
 
 async function newPage(base, opts, { live } = {}) {
   const context = await browser.newContext(opts)
@@ -164,6 +169,12 @@ console.log("\nPolítica de Privacidade (texto atual preservado)")
   await context.close()
 }
 
+await check("sem texto vigente a página não é indexável; com texto, é", async () => {
+  const robots = async (p) => (await (await fetch(fb.base + p)).text()).match(/<meta name="robots" content="([^"]*)"/)?.[1] ?? null
+  assert.match(await robots("/termos"), /noindex/)
+  assert.equal(await robots("/privacidade"), null)
+})
+
 console.log("\nTermos de Uso (sem texto vigente: não inventa conteúdo)")
 {
   const { context, page } = await newPage(fb.base, desktop)
@@ -231,6 +242,23 @@ await check("vigência futura não é exibida como atual", async () => {
   assert.equal(await page.getByText("9.9", { exact: true }).count(), 0)
   await context.close()
 })
+
+console.log("\nÂncoras do contrato (documento gerado pelo código real do backend)")
+{
+  const fixture = JSON.parse(readFileSync(path.resolve("tests/fixtures/server-document-anchors.json"), "utf8"))
+  for (const id of ["inteligencia-artificial", "whatsapp", "retencao", "exclusao-de-dados", "direitos-dos-titulares"]) {
+    await check(`link direto /privacidade#${id} abre a seção (carga fria, conteúdo chega depois do HTML)`, async () => {
+      const { context, page } = await newPage(api.base, desktop, { live: async (t) => (t === "privacy" ? fixture : null) })
+      await page.goto(`${api.base}/privacidade#${id}`)
+      await page.getByText("2.0-teste", { exact: true }).waitFor()
+      await page.waitForTimeout(1300)
+      const top = await page.evaluate((h) => document.getElementById(h).getBoundingClientRect().top, id)
+      assert.ok(top >= -2 && top < 300, `top=${top}`)
+      assert.equal(await page.locator(`section#${id}`).count(), 1)
+      await context.close()
+    })
+  }
+}
 
 console.log("\nCelular (390 px)")
 {
@@ -325,10 +353,37 @@ console.log("\nFormulário de exclusão — sem backend aprovado (caminho por e-
       await page.keyboard.press("Tab")
       order.push(await page.evaluate(() => document.activeElement.tagName + ":" + (document.activeElement.getAttribute("type") || "")))
     }
-    assert.deepEqual(order, ["SELECT:", "A:", "INPUT:checkbox", "BUTTON:submit"])
+    // Safari (macOS/iOS) não inclui links no Tab por padrão (só com Option+Tab): comportamento do navegador, não do site.
+    const expected = ENGINE === "webkit" ? ["SELECT:", "INPUT:checkbox", "BUTTON:submit"] : ["SELECT:", "A:", "INPUT:checkbox", "BUTTON:submit"]
+    assert.deepEqual(order.slice(0, expected.length), expected)
   })
   await context.close()
 }
+
+await check("sem JavaScript (ou antes de carregar) o botão fica desabilitado: nenhum envio nativo, e-mail nunca vai para a URL", async () => {
+  const context = await browser.newContext({ ...desktop, javaScriptEnabled: false })
+  const page = await context.newPage()
+  await page.goto(`${fb.base}/exclusao-de-conta`)
+  assert.equal(await page.getByRole("button", { name: "Solicitar exclusão da conta" }).isDisabled(), true)
+  await page.getByLabel(/E-mail cadastrado/).fill("pessoa@example.com")
+  await page.getByLabel(/E-mail cadastrado/).press("Enter")
+  await page.waitForTimeout(300)
+  assert.equal(new URL(page.url()).search, "")
+  await context.close()
+})
+await check("texto digitado antes da hidratação não é apagado (campos não controlados)", async () => {
+  const context = await browser.newContext(desktop)
+  const page = await context.newPage()
+  await page.route("**/_next/static/**", async (route) => {
+    await new Promise((r) => setTimeout(r, 1500))
+    return route.continue()
+  })
+  await page.goto(`${fb.base}/exclusao-de-conta`, { waitUntil: "domcontentloaded" })
+  await page.getByLabel(/E-mail cadastrado/).fill("rapido@example.com")
+  await page.getByRole("button", { name: "Solicitar exclusão da conta" }).and(page.locator(":enabled")).waitFor({ timeout: 20000 })
+  assert.equal(await page.getByLabel(/E-mail cadastrado/).inputValue(), "rapido@example.com")
+  await context.close()
+})
 
 console.log("\nFormulário de exclusão — com backend (simulado)")
 async function apiPage(handler, opts = desktop) {
@@ -451,6 +506,29 @@ await check("validação no cliente impede a chamada (e-mail inválido / caixa d
   await context.close()
 })
 
+await check("400 do servidor nunca repassa texto à tela (não revela estado de conta)", async () => {
+  const { context, page } = await apiPage(async (route) => (await cors(route)) || route.fulfill({ status: 400, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: JSON.stringify({ error: "Não existe conta para este e-mail" }) }))
+  await fillValid(page)
+  await page.getByRole("button", { name: "Solicitar exclusão da conta" }).click()
+  const alert = page.getByRole("alert").filter({ hasText: "Não conseguimos aceitar" })
+  await alert.waitFor()
+  assert.doesNotMatch(await page.locator("main").innerText(), /Não existe conta/)
+  await context.close()
+})
+await check("e-mails com e sem conta (respostas equivalentes do servidor) produzem exatamente a mesma tela", async () => {
+  const screens = []
+  for (const [email, protocol] of [["existe@example.com", "PRV-20261127-AAAAAA"], ["nao-existe@example.com", "PRV-20261127-BBBBBB"]]) {
+    const { context, page } = await apiPage(async (route) => (await cors(route)) || ok(route, { protocol }))
+    await page.getByLabel(/E-mail cadastrado/).fill(email)
+    await page.getByLabel("Confirmo que desejo solicitar").check()
+    await page.getByRole("button", { name: "Solicitar exclusão da conta" }).click()
+    await page.getByRole("heading", { name: "Solicitação recebida" }).waitFor()
+    screens.push((await page.locator("main").innerText()).replace(/PRV-\d{8}-[A-Z0-9]{6}/, "PRV-X"))
+    await context.close()
+  }
+  assert.equal(screens[0], screens[1])
+})
+
 console.log("\nConfirmação de titularidade (simulada)")
 {
   const token = "Zx9_-" + "a".repeat(38)
@@ -488,6 +566,20 @@ console.log("\nConfirmação de titularidade (simulada)")
     await c.context.close()
   })
 }
+
+await check("confirmação expirada (410): explica, não diz que excluiu, oferece novo link", async () => {
+  const token = "Zx9_-" + "a".repeat(38)
+  const c = await newPage(api.base, desktop)
+  await c.page.route("https://api.test/**", async (route) => (await cors(route)) || route.fulfill({ status: 410, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: "{}" }))
+  await c.page.goto(`${api.base}/exclusao-de-conta/confirmar#t=${token}`)
+  await c.page.getByRole("button", { name: "Confirmar meu e-mail" }).and(c.page.locator(":enabled")).click()
+  await c.page.getByRole("heading", { name: "O prazo deste link terminou" }).waitFor()
+  const text = await c.page.locator("main").innerText()
+  assert.match(text, /A conta ainda não foi excluída/)
+  assert.equal(await c.page.getByRole("link", { name: "Pedir um novo link" }).getAttribute("href"), "/exclusao-de-conta")
+  await shot(c.page, "desktop-confirmacao-expirada")
+  await c.context.close()
+})
 
 console.log("\nCelular — formulário")
 {

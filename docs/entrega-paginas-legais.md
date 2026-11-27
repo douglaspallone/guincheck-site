@@ -32,15 +32,23 @@ Sem login, sem cookies, sem analytics (o `Analytics` global é suprimido nestas 
 
 ## 4. Testes
 
-- `npm test`: 23 testes (hash cruzado com o código real do backend, validação estrita, adulteração, vigência,
+- `npm test`: 24 testes (hash cruzado com o código real do backend, validação estrita, adulteração, vigência,
   precedência, âncoras, datas, leitura ao vivo, e-mail, formulário, rede/timeout/5xx/429, token no fragmento).
-- `tests/e2e/smoke.mjs` (Chromium/Playwright, backend simulado, **sem contas reais**): 32 verificações — rotas diretas
+- `tests/e2e/smoke.mjs` (Chromium **e WebKit**/Playwright, backend simulado, **sem contas reais**): 43 verificações — rotas diretas
   e variante com barra, texto legado preservado, âncoras, impressão, sem cookies/armazenamento/terceiros, backend
   indisponível/adulterado/futuro/novo, celular 390 px, teclado, erros associados, caminho por e-mail sem simular
   recebimento, envio válido, clique duplo (1 requisição), 500/rede/429 com nova tentativa, confirmação por fragmento, rodapé.
-- Resultado: 23/23 e 32/32. Não cobertos (dependem de infraestrutura ainda inexistente): envio real de e-mail,
+- Resultado: 24/24 e 43/43 em cada motor. Validação integrada (estado, Safari/iOS, execução do que falta): `docs/validacao-integrada.md`. Não cobertos (dependem de infraestrutura ainda inexistente): envio real de e-mail,
   Turnstile real, enumeração de contas, registro no Ops, iOS/Safari físico (usado Chromium; layout sem recursos
   específicos), DNS/HTTPS reais. Evidências: `docs/evidencias/*.jpg`.
+
+## 4.1 Rodada de integração final (27/11/2026)
+
+- Contrato de exclusão atualizado (`contrato-exclusao-de-conta.md`): bloqueio no backend quando a identidade não está confirmada **ou** não há UID válido; link expirado (`410`); reenvio = repetir a solicitação com o mesmo e-mail (novo token, mesma resposta pública). O contrato definitivo do backend ainda não existe: a reconciliação é pontual em `lib/privacy/deletion.ts`.
+- Formulário: o site nunca exibe texto de erro vindo do servidor; confirmação expirada com "Pedir um novo link"; campos não controlados e botão desabilitado até carregar (corrige perda de texto e envio nativo antes da hidratação, achado no WebKit).
+- `/termos` e `/privacidade` sem documento vigente ganham `noindex`; `/termos` segue em "em atualização" (nenhum texto incompleto é publicado como oficial); texto legado de privacidade inalterado.
+- Âncoras: os cinco ids testados com documento gerado pelo backend real (`tests/fixtures/server-document-anchors.json`). O backend commitado só reserva `inteligencia-artificial`: **pendência para o Ops** reservar também `whatsapp`, `retencao`, `exclusao-de-dados`, `direitos-dos-titulares`.
+- Novo `scripts/check-backend.ts` para validar o backend real de teste quando existir.
 
 ## 5. Plano de publicação e rollback
 

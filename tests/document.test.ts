@@ -175,3 +175,15 @@ test("leitura ao vivo: sucesso, 404, adulteração, rede e formato", async () =>
   const wrongType = (async () => jsonResponse({ document: serverDoc() })) as unknown as typeof fetch
   assert.equal(await fetchLiveDocument("https://api.example", "terms", { fetchImpl: wrongType }), null)
 })
+
+test("âncoras do contrato: documento gerado pelo backend real tem os cinco ids e hash íntegro; alias não interfere", async () => {
+  const raw = JSON.parse(readFileSync(new URL("./fixtures/server-document-anchors.json", import.meta.url), "utf8"))
+  const doc = parsePublicDocument(raw, "privacy")!
+  assert.ok(doc)
+  assert.equal(await verifyDocumentHash(doc), true)
+  const ids = doc.sections.map((s) => s.id)
+  for (const id of ["inteligencia-artificial", "whatsapp", "retencao", "exclusao-de-dados", "direitos-dos-titulares"]) {
+    assert.ok(ids.includes(id), id)
+  }
+  assert.deepEqual(aliasesBySection(ids), {}, "com os ids oficiais publicados, nenhum alias é necessário")
+})
